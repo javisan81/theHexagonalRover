@@ -1,9 +1,5 @@
 package org.bcnjug.infrastructure;
 
-import lombok.Data;
+public record PositionDirection(Position position, String direction){
 
-@Data
-public class PositionDirection {
-    private final Position position;
-    private final String direction;
 }

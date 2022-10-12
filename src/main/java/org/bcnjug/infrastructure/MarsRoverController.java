@@ -28,7 +28,7 @@ public class MarsRoverController {
     private String toJson(Position position) {
         return """
                 {"x":%d, "y":%d}
-                """.formatted(position.getX(), position.getY());
+                """.formatted(position.x(), position.y());
     }
 
     @GetMapping("/direction")
