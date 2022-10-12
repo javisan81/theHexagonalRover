@@ -1,5 +1,6 @@
-package org.bcnjug;
+package org.bcnjug.infrastructure;
 
+import org.bcnjug.domain.MarsRoverUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -8,8 +9,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.bcnjug.Direction.North;
-import static org.bcnjug.Direction.South;
+import static org.bcnjug.domain.Direction.North;
+import static org.bcnjug.domain.Direction.South;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -18,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MarsRoverSmokeIT {
+public class MarsRoverIT {
 
     @Autowired
     private MockMvc mockMvc;

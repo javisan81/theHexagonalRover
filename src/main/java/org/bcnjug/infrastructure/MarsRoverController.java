@@ -1,5 +1,7 @@
-package org.bcnjug;
+package org.bcnjug.infrastructure;
 
+import org.bcnjug.domain.Direction;
+import org.bcnjug.domain.MarsRoverUseCase;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

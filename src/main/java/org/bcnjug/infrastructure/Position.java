@@ -1,4 +1,4 @@
-package org.bcnjug;
+package org.bcnjug.infrastructure;
 
 import lombok.Data;
 
