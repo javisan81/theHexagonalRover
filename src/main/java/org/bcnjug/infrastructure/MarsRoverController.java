@@ -21,32 +21,12 @@ public class MarsRoverController {
     }
 
     @GetMapping("/position")
-    public String getPosition() {
-        return toJson(marsRoverUseCase.getPosition());
-    }
-
-    private String toJson(Position position) {
-        return """
-                {"x":%d, "y":%d}
-                """.formatted(position.x(), position.y());
+    public Position getPosition() {
+        return marsRoverUseCase.getPosition();
     }
 
     @GetMapping("/direction")
-    public String getDirection() {
-        return toJson(marsRoverUseCase.getDirection());
-    }
-
-    private String toJson(Direction direction) {
-        return switch (direction) {
-            case North -> toJsonDirection("N");
-            case South -> toJsonDirection("S");
-        };
-    }
-
-    private static String toJsonDirection(String direction) {
-        return """
-                {
-                    "direction": %s
-                }""".formatted(direction);
+    public org.bcnjug.infrastructure.Direction getDirection() {
+        return new org.bcnjug.infrastructure.Direction(marsRoverUseCase.getDirection());
     }
 }
