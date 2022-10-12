@@ -7,26 +7,44 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class MarsRoverController {
+    private final MarsRoverUseCase marsRoverUseCase;
+
+    public MarsRoverController(MarsRoverUseCase marsRoverUseCase) {
+        this.marsRoverUseCase = marsRoverUseCase;
+    }
+
     @PostMapping("/initialize")
     public void setPosition(@RequestBody PositionDirection position) {
-
+        marsRoverUseCase.setPosition(position);
     }
 
     @GetMapping("/position")
     public String getPosition() {
-        return """
-                {
-                "x":1,
-                "y":1
-                }
-                """;
+        return toJson(marsRoverUseCase.getPosition());
     }
+
+    private String toJson(Position position) {
+        return """
+                {"x":%d, "y":%d}
+                """.formatted(position.getX(), position.getY());
+    }
+
     @GetMapping("/direction")
     public String getDirection() {
+        return toJson(marsRoverUseCase.getDirection());
+    }
+
+    private String toJson(Direction direction) {
+        return switch (direction) {
+            case North -> toJsonDirection("N");
+            case South -> toJsonDirection("S");
+        };
+    }
+
+    private static String toJsonDirection(String direction) {
         return """
                 {
-                "direction":"North"
-                }
-                """;
+                    "direction": %s
+                }""".formatted(direction);
     }
 }
