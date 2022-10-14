@@ -1,6 +1,8 @@
 package org.bcnjug.infrastructure;
 
 import org.bcnjug.domain.MarsRoverUseCase;
+import org.bcnjug.domain.Position;
+import org.bcnjug.domain.PositionDirection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -41,7 +43,7 @@ public class MarsRoverIT {
         setRoverPositionDirection(x1y1, "N");
         assertRoverIsInPosition(x1y1);
         assertRoverIsFacing("N");
-        verify(marsRoverUseCase).setPosition(new PositionDirection(x1y1, "N"));
+        verify(marsRoverUseCase).setPosition(new org.bcnjug.domain.PositionDirection(x1y1, North));
     }
     @Test
     public void initialiseRoverTo22FacingSouth() throws Exception {
@@ -51,7 +53,7 @@ public class MarsRoverIT {
         setRoverPositionDirection(x2y2, "S");
         assertRoverIsInPosition(x2y2);
         assertRoverIsFacing("S");
-        verify(marsRoverUseCase).setPosition(new PositionDirection(x2y2, "S"));
+        verify(marsRoverUseCase).setPosition(new PositionDirection(x2y2, South));
     }
 
     private void assertRoverIsFacing(String direction) throws Exception {
@@ -71,8 +73,8 @@ public class MarsRoverIT {
                                 .content("""
                                             {
                                                 "position": {
-                                                    "x": %d,
-                                                    "y": %d
+                                                    "lon": %d,
+                                                    "lat": %d
                                                 },
                                                 "direction": "%s"
                                             }
@@ -86,8 +88,8 @@ public class MarsRoverIT {
                 ).andExpect(status().isOk())
                 .andExpect(content().json("""
                             {
-                                "x": %d,
-                                "y": %d
+                                "lon": %d,
+                                "lat": %d
                             }
                         """.formatted(position.x(), position.y())));
     }
