@@ -4,12 +4,19 @@ import org.bcnjug.domain.MarsRoverUseCase;
 import org.bcnjug.domain.Position;
 import org.bcnjug.domain.PositionDirection;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 import static org.bcnjug.domain.Direction.North;
 import static org.bcnjug.domain.Direction.South;
@@ -35,25 +42,22 @@ public class MarsRoverIT {
         mockMvc.perform(get("/")).andExpect(status().isNotFound());
     }
 
-    @Test
-    public void initialiseRoverTo11FacingNorth() throws Exception {
-        Position x1y1 = new Position(1, 1);
-        when(marsRoverUseCase.getDirection()).thenReturn(North);
-        when(marsRoverUseCase.getPosition()).thenReturn(x1y1);
-        setRoverPositionDirection(x1y1, "N");
-        assertRoverIsInPosition(x1y1);
-        assertRoverIsFacing("N");
-        verify(marsRoverUseCase).setPosition(new org.bcnjug.domain.PositionDirection(x1y1, North));
+    private static Stream<Arguments> initialPositionDirections() {
+        return Stream.of(
+                Arguments.of(new PositionDirection(new Position(1, 1), North), "N"),
+                Arguments.of(new PositionDirection(new Position(2, 2), South), "S")
+        );
     }
-    @Test
-    public void initialiseRoverTo22FacingSouth() throws Exception {
-        Position x2y2 = new Position(2, 2);
-        when(marsRoverUseCase.getDirection()).thenReturn(South);
-        when(marsRoverUseCase.getPosition()).thenReturn(x2y2);
-        setRoverPositionDirection(x2y2, "S");
-        assertRoverIsInPosition(x2y2);
-        assertRoverIsFacing("S");
-        verify(marsRoverUseCase).setPosition(new PositionDirection(x2y2, South));
+
+    @ParameterizedTest
+    @MethodSource("initialPositionDirections")
+    public void initialiseRover(PositionDirection positionDirection, String formattedDirection) throws Exception {
+        when(marsRoverUseCase.getDirection()).thenReturn(positionDirection.direction());
+        when(marsRoverUseCase.getPosition()).thenReturn(positionDirection.position());
+        setRoverPositionDirection(positionDirection.position(), formattedDirection);
+        assertRoverIsInPosition(positionDirection.position());
+        assertRoverIsFacing(formattedDirection);
+        verify(marsRoverUseCase).setPosition(positionDirection);
     }
 
     private void assertRoverIsFacing(String direction) throws Exception {
