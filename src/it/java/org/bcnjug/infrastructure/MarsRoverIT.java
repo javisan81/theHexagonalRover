@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.bcnjug.domain.Direction.North;
 import static org.bcnjug.domain.Direction.South;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,73 +35,59 @@ public class MarsRoverIT {
 
     @Test
     public void initialiseRoverTo11FacingNorth() throws Exception {
+        Position x1y1 = new Position(1, 1);
         when(marsRoverUseCase.getDirection()).thenReturn(North);
-        when(marsRoverUseCase.getPosition()).thenReturn(new Position(1,1));
-        mockMvc.perform(
-                        post("/initialize")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("""
-                                            {
-                                                "position": {
-                                                    "x": 1,
-                                                    "y": 1
-                                                },
-                                                "direction": "N"
-                                            }
-                                        """))
-                .andExpect(status().isOk());
-
-        mockMvc.perform(
-                        get("/position")
-                ).andExpect(status().isOk())
-                .andExpect(content().json("""
-                            {
-                                "x": 1,
-                                "y": 1
-                            }
-                        """));
-
-        mockMvc.perform(
-                        get("/direction")
-                ).andExpect(status().isOk())
-                .andExpect(content().json("""
-                        {"direction":  "N"}
-                        """));
+        when(marsRoverUseCase.getPosition()).thenReturn(x1y1);
+        setRoverPositionDirection(x1y1, "N");
+        assertRoverIsInPosition(x1y1);
+        assertRoverIsFacing("N");
     }
     @Test
     public void initialiseRoverTo22FacingSouth() throws Exception {
+        Position x2y2 = new Position(2, 2);
         when(marsRoverUseCase.getDirection()).thenReturn(South);
-        when(marsRoverUseCase.getPosition()).thenReturn(new Position(2,2));
+        when(marsRoverUseCase.getPosition()).thenReturn(x2y2);
+        setRoverPositionDirection(x2y2, "S");
+        assertRoverIsInPosition(x2y2);
+        assertRoverIsFacing("S");
+    }
+
+    private void assertRoverIsFacing(String direction) throws Exception {
+        mockMvc.perform(
+                        get("/direction")
+                ).andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {"direction":  "%s"}
+                        """.formatted(direction)));
+    }
+
+
+    private void setRoverPositionDirection(Position position, String direction) throws Exception {
         mockMvc.perform(
                         post("/initialize")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
                                             {
                                                 "position": {
-                                                    "x": 2,
-                                                    "y": 2
+                                                    "x": %d,
+                                                    "y": %d
                                                 },
-                                                "direction": "S"
+                                                "direction": "%s"
                                             }
-                                        """))
+                                        """.formatted(position.x(), position.y(), direction)))
                 .andExpect(status().isOk());
+    }
 
+    private void assertRoverIsInPosition(Position position) throws Exception {
         mockMvc.perform(
                         get("/position")
                 ).andExpect(status().isOk())
                 .andExpect(content().json("""
                             {
-                                "x": 2,
-                                "y": 2
+                                "x": %d,
+                                "y": %d
                             }
-                        """));
-
-        mockMvc.perform(
-                        get("/direction")
-                ).andExpect(status().isOk())
-                .andExpect(content().json("""
-                        {"direction":  "S"}
-                        """));
+                        """.formatted(position.x(), position.y())));
     }
 
 }
