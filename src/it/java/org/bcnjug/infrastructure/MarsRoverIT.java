@@ -18,8 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static org.bcnjug.domain.Direction.North;
-import static org.bcnjug.domain.Direction.South;
+import static org.bcnjug.domain.Direction.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -45,7 +44,9 @@ public class MarsRoverIT {
     private static Stream<Arguments> initialPositionDirections() {
         return Stream.of(
                 Arguments.of(new PositionDirection(new Position(1, 1), North), "N"),
-                Arguments.of(new PositionDirection(new Position(2, 2), South), "S")
+                Arguments.of(new PositionDirection(new Position(2, 2), South), "S"),
+                Arguments.of(new PositionDirection(new Position(1, 1), East), "E"),
+                Arguments.of(new PositionDirection(new Position(2, 2), West), "W")
         );
     }
 

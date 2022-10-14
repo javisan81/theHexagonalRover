@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.bcnjug.domain.Direction.North;
-import static org.bcnjug.domain.Direction.South;
+import static org.bcnjug.domain.Direction.*;
 
 @RestController
 public class MarsRoverController {
@@ -40,6 +39,8 @@ public class MarsRoverController {
         return switch (direction) {
             case "N" -> North;
             case "S" -> South;
+            case "E" -> East;
+            case "W" -> West;
             default -> North;
         };
     }

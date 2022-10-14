@@ -13,6 +13,8 @@ public class JsonDirection {
         return switch (direction) {
             case North -> "N";
             case South -> "S";
+            case East -> "E";
+            case West -> "W";
         };
     }
 
