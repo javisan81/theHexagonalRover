@@ -41,6 +41,7 @@ public class MarsRoverIT {
         setRoverPositionDirection(x1y1, "N");
         assertRoverIsInPosition(x1y1);
         assertRoverIsFacing("N");
+        verify(marsRoverUseCase).setPosition(new PositionDirection(x1y1, "N"));
     }
     @Test
     public void initialiseRoverTo22FacingSouth() throws Exception {
@@ -50,6 +51,7 @@ public class MarsRoverIT {
         setRoverPositionDirection(x2y2, "S");
         assertRoverIsInPosition(x2y2);
         assertRoverIsFacing("S");
+        verify(marsRoverUseCase).setPosition(new PositionDirection(x2y2, "S"));
     }
 
     private void assertRoverIsFacing(String direction) throws Exception {
