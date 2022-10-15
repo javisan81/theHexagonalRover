@@ -1,4 +1,4 @@
-package org.bcnjug.infrastructure;
+package org.bcnjug.infrastructure.controllers;
 
 import org.bcnjug.domain.MarsRoverUseCase;
 import org.bcnjug.domain.Position;

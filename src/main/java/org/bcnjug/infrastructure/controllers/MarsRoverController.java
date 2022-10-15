@@ -1,9 +1,12 @@
-package org.bcnjug.infrastructure;
+package org.bcnjug.infrastructure.controllers;
 
 import org.bcnjug.domain.Direction;
 import org.bcnjug.domain.MarsRoverUseCase;
 import org.bcnjug.domain.Position;
 import org.bcnjug.domain.PositionDirection;
+import org.bcnjug.infrastructure.controllers.Coordinate;
+import org.bcnjug.infrastructure.controllers.JsonDirection;
+import org.bcnjug.infrastructure.controllers.LatLong;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

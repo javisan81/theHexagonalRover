@@ -1,4 +1,4 @@
-package org.bcnjug.infrastructure;
+package org.bcnjug.infrastructure.configurations;
 
 import org.bcnjug.domain.MarsRover;
 import org.springframework.context.annotation.Bean;
