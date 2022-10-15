@@ -1,9 +1,6 @@
 package org.bcnjug.infrastructure.controllers;
 
 import org.bcnjug.domain.*;
-import org.bcnjug.infrastructure.controllers.Coordinate;
-import org.bcnjug.infrastructure.controllers.JsonDirection;
-import org.bcnjug.infrastructure.controllers.LatLong;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
