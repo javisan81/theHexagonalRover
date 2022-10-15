@@ -23,7 +23,7 @@ public class Move {
         this.direction = direction;
     }
 
-    public PositionDirection apply(PositionDirection positionDirection) {
-        return new PositionDirection(this.vector.apply(positionDirection.position()), direction);
+    public PositionDirection apply(Position position) {
+        return new PositionDirection(this.vector.apply(position), direction);
     }
 }

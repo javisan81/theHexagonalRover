@@ -9,7 +9,7 @@ public class Movement {
         this.movesByDirection = movesByDirection;
     }
 
-    public PositionDirection apply(PositionDirection positionDirection) {
-        return this.movesByDirection.get(positionDirection.direction()).apply(positionDirection);
+    public PositionDirection apply(Position position, Direction direction) {
+        return this.movesByDirection.get(direction).apply(position);
     }
 }
