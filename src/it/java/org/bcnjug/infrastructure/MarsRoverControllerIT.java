@@ -34,11 +34,6 @@ public class MarsRoverControllerIT {
     @MockBean
     private MarsRoverUseCase marsRoverUseCase;
 
-    @Test
-    public void smokeTest() throws Exception {
-        mockMvc.perform(get("/")).andExpect(status().isNotFound());
-    }
-
     private static Stream<Arguments> initialPositionDirections() {
         return Stream.of(
                 Arguments.of(new PositionDirection(new Position(1, 1), North), "N"),
