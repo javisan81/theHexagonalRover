@@ -22,6 +22,6 @@ public class MarsRover implements MarsRoverUseCase {
 
     @Override
     public void move(List<MoveCommand> commands) {
-
+        positionDirection = MovementFactory.create(commands.get(0)).apply(this.positionDirection);
     }
 }
