@@ -1,5 +1,6 @@
 package org.bcnjug.domain;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -27,8 +28,8 @@ public class MarsRoverUseCaseTest {
     public void initialiseRover(PositionDirection positionDirection) {
         MarsRoverUseCase marsRover = new MarsRover();
         marsRover.setPosition(positionDirection);
-        assertEquals(marsRover.getPosition(), positionDirection.position());
-        assertEquals(marsRover.getDirection(), positionDirection.direction());
+        assertEquals(positionDirection.position(), marsRover.getPosition());
+        assertEquals(positionDirection.direction(), marsRover.getDirection());
     }
 
     private static Stream<Arguments> moveForwardRoversDirection() {
@@ -46,8 +47,8 @@ public class MarsRoverUseCaseTest {
         MarsRoverUseCase marsRover = new MarsRover();
         marsRover.setPosition(new PositionDirection(new Position(0, 0), direction));
         marsRover.move(List.of(Forward));
-        assertEquals(marsRover.getPosition(), expectedPosition);
-        assertEquals(marsRover.getDirection(), direction);
+        assertEquals(expectedPosition, marsRover.getPosition());
+        assertEquals(direction, marsRover.getDirection());
     }
 
     private static Stream<Arguments> moveBackwardRoversDirection() {
@@ -65,8 +66,8 @@ public class MarsRoverUseCaseTest {
         MarsRoverUseCase marsRover = new MarsRover();
         marsRover.setPosition(new PositionDirection(new Position(0, 0), direction));
         marsRover.move(List.of(Backward));
-        assertEquals(marsRover.getPosition(), expectedPosition);
-        assertEquals(marsRover.getDirection(), direction);
+        assertEquals(expectedPosition, marsRover.getPosition());
+        assertEquals(direction, marsRover.getDirection());
     }
 
     private static Stream<Arguments> turnLeftRoversDirection() {
@@ -84,7 +85,7 @@ public class MarsRoverUseCaseTest {
         MarsRoverUseCase marsRover = new MarsRover();
         marsRover.setPosition(new PositionDirection(new Position(0, 0), currentDirection));
         marsRover.move(List.of(Left));
-        assertEquals(marsRover.getDirection(), expectedDirection);
+        assertEquals(expectedDirection, marsRover.getDirection());
     }
 
 
@@ -103,6 +104,15 @@ public class MarsRoverUseCaseTest {
         MarsRoverUseCase marsRover = new MarsRover();
         marsRover.setPosition(new PositionDirection(new Position(0, 0), currentDirection));
         marsRover.move(List.of(Right));
-        assertEquals(marsRover.getDirection(), expectedDirection);
+        assertEquals(expectedDirection, marsRover.getDirection());
+    }
+
+    @Test
+    public void multipleCommands() {
+        MarsRoverUseCase marsRover = new MarsRover();
+        marsRover.setPosition(new PositionDirection(new Position(0, 0), North));
+        marsRover.move(List.of(Forward, Forward, Right, Right, Left, Backward));
+        assertEquals(East, marsRover.getDirection());
+        assertEquals(new Position(-1, 2), marsRover.getPosition());
     }
 }
