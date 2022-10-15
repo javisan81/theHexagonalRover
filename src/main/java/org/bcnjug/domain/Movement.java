@@ -3,26 +3,13 @@ package org.bcnjug.domain;
 import java.util.Map;
 
 public class Movement {
-    public static class Vector{
-        private final int x;
-        private final int y;
+    private final Map<Direction, Move> movesByDirection;
 
-        public Vector(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public Position apply(Position position) {
-            return new Position(position.x() + this.x, position.y() + this.y);
-        }
-    }
-    private final Map<Direction, Vector> vectorByDirection;
-
-    public Movement(Map<Direction, Vector> vectorByDirection) {
-        this.vectorByDirection = vectorByDirection;
+    public Movement(Map<Direction, Move> movesByDirection) {
+        this.movesByDirection = movesByDirection;
     }
 
     public PositionDirection apply(PositionDirection positionDirection) {
-        return new PositionDirection(this.vectorByDirection.get(positionDirection.direction()).apply(positionDirection.position()), positionDirection.direction());
+        return this.movesByDirection.get(positionDirection.direction()).apply(positionDirection);
     }
 }

@@ -1,6 +1,5 @@
 package org.bcnjug.domain;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -34,12 +33,13 @@ public class MarsRoverUseCaseTest {
 
     private static Stream<Arguments> moveForwardRoversDirection() {
         return Stream.of(
-                Arguments.of(North, new Position(0,1)),
-                Arguments.of(South, new Position(0,-1)),
-                Arguments.of(East,new Position(1,0)),
-                Arguments.of(West, new Position(-1,0))
+                Arguments.of(North, new Position(0, 1)),
+                Arguments.of(South, new Position(0, -1)),
+                Arguments.of(East, new Position(1, 0)),
+                Arguments.of(West, new Position(-1, 0))
         );
     }
+
     @ParameterizedTest
     @MethodSource("moveForwardRoversDirection")
     public void moveForward(Direction direction, Position expectedPosition) {
@@ -52,12 +52,13 @@ public class MarsRoverUseCaseTest {
 
     private static Stream<Arguments> moveBackwardRoversDirection() {
         return Stream.of(
-                Arguments.of(North, new Position(0,-1)),
-                Arguments.of(South, new Position(0,1)),
-                Arguments.of(East,new Position(-1,0)),
-                Arguments.of(West, new Position(1,0))
+                Arguments.of(North, new Position(0, -1)),
+                Arguments.of(South, new Position(0, 1)),
+                Arguments.of(East, new Position(-1, 0)),
+                Arguments.of(West, new Position(1, 0))
         );
     }
+
     @ParameterizedTest
     @MethodSource("moveBackwardRoversDirection")
     public void moveBackward(Direction direction, Position expectedPosition) {
@@ -68,4 +69,40 @@ public class MarsRoverUseCaseTest {
         assertEquals(marsRover.getDirection(), direction);
     }
 
+    private static Stream<Arguments> turnLeftRoversDirection() {
+        return Stream.of(
+                Arguments.of(North, West),
+                Arguments.of(South, East),
+                Arguments.of(East, North),
+                Arguments.of(West, South)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("turnLeftRoversDirection")
+    public void turnLeft(Direction currentDirection, Direction expectedDirection) {
+        MarsRoverUseCase marsRover = new MarsRover();
+        marsRover.setPosition(new PositionDirection(new Position(0, 0), currentDirection));
+        marsRover.move(List.of(Left));
+        assertEquals(marsRover.getDirection(), expectedDirection);
+    }
+
+
+    private static Stream<Arguments> turnRightRoversDirection() {
+        return Stream.of(
+                Arguments.of(North, East),
+                Arguments.of(South, West),
+                Arguments.of(East, South),
+                Arguments.of(West, North)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("turnRightRoversDirection")
+    public void turnRight(Direction currentDirection, Direction expectedDirection) {
+        MarsRoverUseCase marsRover = new MarsRover();
+        marsRover.setPosition(new PositionDirection(new Position(0, 0), currentDirection));
+        marsRover.move(List.of(Right));
+        assertEquals(marsRover.getDirection(), expectedDirection);
+    }
 }
