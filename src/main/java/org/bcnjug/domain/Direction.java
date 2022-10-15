@@ -1,5 +1,5 @@
 package org.bcnjug.domain;
 
 public enum Direction {
-    North,South, East, West
+    North,South, East, West;
 }

@@ -1,9 +1,6 @@
 package org.bcnjug.infrastructure.controllers;
 
-import org.bcnjug.domain.Direction;
-import org.bcnjug.domain.MarsRoverUseCase;
-import org.bcnjug.domain.Position;
-import org.bcnjug.domain.PositionDirection;
+import org.bcnjug.domain.*;
 import org.bcnjug.infrastructure.controllers.Coordinate;
 import org.bcnjug.infrastructure.controllers.JsonDirection;
 import org.bcnjug.infrastructure.controllers.LatLong;
@@ -12,7 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 import static org.bcnjug.domain.Direction.*;
+import static org.bcnjug.domain.MoveCommand.*;
 
 @RestController
 public class MarsRoverController {
@@ -31,6 +32,21 @@ public class MarsRoverController {
     public LatLong getPosition() {
         Position position = marsRoverUseCase.getPosition();
         return new LatLong(position.x(), position.y());
+    }
+
+    @PostMapping("/move")
+    public void move(@RequestBody String[] commands) {
+        marsRoverUseCase.move(toMoveCommands(commands));
+    }
+
+    private List<MoveCommand> toMoveCommands(String[] commands) {
+        return Stream.of(commands).map(c -> switch (c){
+            case "f" -> Forward;
+            case "b" -> Backward;
+            case "r" -> Right;
+            case "l" -> Left;
+            default -> Forward;
+        }).toList();
     }
 
     @GetMapping("/direction")

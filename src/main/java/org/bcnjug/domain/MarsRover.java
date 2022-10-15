@@ -1,5 +1,7 @@
 package org.bcnjug.domain;
 
+import java.util.List;
+
 public class MarsRover implements MarsRoverUseCase {
     private PositionDirection positionDirection;
 
@@ -16,5 +18,10 @@ public class MarsRover implements MarsRoverUseCase {
     @Override
     public Direction getDirection() {
         return positionDirection.direction();
+    }
+
+    @Override
+    public void move(List<MoveCommand> commands) {
+
     }
 }

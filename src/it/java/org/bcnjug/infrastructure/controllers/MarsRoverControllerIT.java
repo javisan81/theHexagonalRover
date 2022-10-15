@@ -1,8 +1,6 @@
 package org.bcnjug.infrastructure.controllers;
 
-import org.bcnjug.domain.MarsRoverUseCase;
-import org.bcnjug.domain.Position;
-import org.bcnjug.domain.PositionDirection;
+import org.bcnjug.domain.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -14,9 +12,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Arrays.asList;
 import static org.bcnjug.domain.Direction.*;
+import static org.bcnjug.domain.MoveCommand.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,6 +55,29 @@ public class MarsRoverControllerIT {
         assertRoverIsFacing(formattedDirection);
         verify(marsRoverUseCase).setPosition(positionDirection);
     }
+
+    @Test
+    public void moveRover() throws Exception {
+        when(marsRoverUseCase.getDirection()).thenReturn(North);
+        when(marsRoverUseCase.getPosition()).thenReturn(new Position(0, 0));
+        setRoverPositionDirection(new Position(0, 0), "N");
+        moveCommand(new String[]{"f", "b", "r", "l"});
+        assertRoverIsInPosition(new Position(0, 0));
+        assertRoverIsFacing("N");
+        verify(marsRoverUseCase).move(asList(Forward, Backward, Right, Left));
+    }
+
+    private void moveCommand(String[] moveCommands) throws Exception {
+        String jsonCommandsArray = Stream.of(moveCommands).map("\"%s\""::formatted).collect(Collectors.joining(","));
+        mockMvc.perform(
+                        post("/move")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                        [%s]
+                                        """.formatted(jsonCommandsArray)))
+                .andExpect(status().isOk());
+    }
+
 
     private void assertRoverIsFacing(String direction) throws Exception {
         mockMvc.perform(
