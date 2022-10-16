@@ -3,6 +3,7 @@ package org.bcnjug.infrastructure.controllers;
 import org.bcnjug.domain.MarsRoverUseCase;
 import org.bcnjug.domain.Position;
 import org.bcnjug.domain.PositionDirection;
+import org.bcnjug.domain.RoverNotInitializedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,8 +21,8 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 import static org.bcnjug.domain.Direction.*;
 import static org.bcnjug.domain.MoveCommand.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -66,6 +67,20 @@ public class MarsRoverControllerIT {
         assertRoverIsInPosition(new Position(0, 0));
         assertRoverIsFacing("N");
         verify(marsRoverUseCase).move(asList(Forward, Backward, Right, Left));
+    }
+
+
+    @Test
+    public void moveRoverNotInitialized() throws Exception {
+        doThrow(new RoverNotInitializedException()).when(marsRoverUseCase).move(any());
+        mockMvc.perform(
+                        post("/move")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                        ["f", "b", "r", "l"]
+                                        """))
+                .andExpect(status().isConflict())
+                .andExpect(content().string("Rover not initialized"));
     }
 
     private void moveCommand(String[] moveCommands) throws Exception {

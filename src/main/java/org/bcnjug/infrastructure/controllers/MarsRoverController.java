@@ -1,10 +1,9 @@
 package org.bcnjug.infrastructure.controllers;
 
 import org.bcnjug.domain.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -36,19 +35,15 @@ public class MarsRoverController {
         marsRoverUseCase.move(toMoveCommands(commands));
     }
 
-    private List<MoveCommand> toMoveCommands(String[] commands) {
-        return Stream.of(commands).map(c -> switch (c){
-            case "f" -> Forward;
-            case "b" -> Backward;
-            case "r" -> Right;
-            case "l" -> Left;
-            default -> Forward;
-        }).toList();
-    }
 
     @GetMapping("/direction")
     public JsonDirection getDirection() {
         return new JsonDirection(marsRoverUseCase.getDirection());
+    }
+
+    @ExceptionHandler({ RoverNotInitializedException.class })
+    public ResponseEntity<String> handleException() {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Rover not initialized");
     }
 
     private static Direction toDirection(String direction) {
@@ -65,6 +60,16 @@ public class MarsRoverController {
         return new PositionDirection(
                 new Position(position.position().lon(), position.position().lat()),
                 toDirection(position.direction()));
+    }
+
+    private List<MoveCommand> toMoveCommands(String[] commands) {
+        return Stream.of(commands).map(c -> switch (c){
+            case "f" -> Forward;
+            case "b" -> Backward;
+            case "r" -> Right;
+            case "l" -> Left;
+            default -> Forward;
+        }).toList();
     }
 
 }
