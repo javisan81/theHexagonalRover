@@ -123,4 +123,11 @@ public class MarsRoverUseCaseTest {
         MarsRoverUseCase marsRover = new MarsRover(new InMemoryPositionDirectionRepository());
         assertThrows(RoverNotInitializedException.class, () -> marsRover.move(List.of(Forward, Forward, Right, Right, Left, Backward)));
     }
+
+    @Test
+    public void getRoverNotInitialized() {
+        MarsRoverUseCase marsRover = new MarsRover(new InMemoryPositionDirectionRepository());
+        assertThrows(RoverNotInitializedException.class, marsRover::getPosition);
+        assertThrows(RoverNotInitializedException.class, marsRover::getDirection);
+    }
 }
