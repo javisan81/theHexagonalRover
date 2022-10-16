@@ -3,25 +3,30 @@ package org.bcnjug.domain;
 import java.util.List;
 
 public class MarsRover implements MarsRoverUseCase {
-    private PositionDirection positionDirection;
+    private final PositionDirectionRepository positionDirectionRepository;
+
+    public MarsRover(PositionDirectionRepository positionDirectionRepository) {
+        this.positionDirectionRepository = positionDirectionRepository;
+    }
 
     @Override
     public void setPosition(PositionDirection positionDirection) {
-        this.positionDirection = positionDirection;
+        this.positionDirectionRepository.save(positionDirection);
     }
 
     @Override
     public Position getPosition() {
-        return positionDirection.position();
+        return this.positionDirectionRepository.get().position();
     }
 
     @Override
     public Direction getDirection() {
-        return positionDirection.direction();
+        return this.positionDirectionRepository.get().direction();
     }
 
     @Override
     public void move(List<MoveCommand> commands) {
-        this.positionDirection = positionDirection.move(commands);
+        PositionDirection positionDirection1 = this.positionDirectionRepository.get();
+        this.positionDirectionRepository.save(positionDirection1.move(commands));
     }
 }

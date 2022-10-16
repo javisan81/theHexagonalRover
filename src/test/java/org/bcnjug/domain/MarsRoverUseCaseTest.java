@@ -1,5 +1,6 @@
 package org.bcnjug.domain;
 
+import org.bcnjug.infrastructure.repositories.InMemoryPositionDirectionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,7 +27,7 @@ public class MarsRoverUseCaseTest {
     @ParameterizedTest
     @MethodSource("initialPositionDirections")
     public void initialiseRover(PositionDirection positionDirection) {
-        MarsRoverUseCase marsRover = new MarsRover();
+        MarsRoverUseCase marsRover = new MarsRover(new InMemoryPositionDirectionRepository());
         marsRover.setPosition(positionDirection);
         assertEquals(positionDirection.position(), marsRover.getPosition());
         assertEquals(positionDirection.direction(), marsRover.getDirection());
@@ -44,7 +45,7 @@ public class MarsRoverUseCaseTest {
     @ParameterizedTest
     @MethodSource("moveForwardRoversDirection")
     public void moveForward(Direction direction, Position expectedPosition) {
-        MarsRoverUseCase marsRover = new MarsRover();
+        MarsRoverUseCase marsRover = new MarsRover(new InMemoryPositionDirectionRepository());
         marsRover.setPosition(new PositionDirection(new Position(0, 0), direction));
         marsRover.move(List.of(Forward));
         assertEquals(expectedPosition, marsRover.getPosition());
@@ -63,7 +64,7 @@ public class MarsRoverUseCaseTest {
     @ParameterizedTest
     @MethodSource("moveBackwardRoversDirection")
     public void moveBackward(Direction direction, Position expectedPosition) {
-        MarsRoverUseCase marsRover = new MarsRover();
+        MarsRoverUseCase marsRover = new MarsRover(new InMemoryPositionDirectionRepository());
         marsRover.setPosition(new PositionDirection(new Position(0, 0), direction));
         marsRover.move(List.of(Backward));
         assertEquals(expectedPosition, marsRover.getPosition());
@@ -82,7 +83,7 @@ public class MarsRoverUseCaseTest {
     @ParameterizedTest
     @MethodSource("turnLeftRoversDirection")
     public void turnLeft(Direction currentDirection, Direction expectedDirection) {
-        MarsRoverUseCase marsRover = new MarsRover();
+        MarsRoverUseCase marsRover = new MarsRover(new InMemoryPositionDirectionRepository());
         marsRover.setPosition(new PositionDirection(new Position(0, 0), currentDirection));
         marsRover.move(List.of(Left));
         assertEquals(expectedDirection, marsRover.getDirection());
@@ -101,7 +102,7 @@ public class MarsRoverUseCaseTest {
     @ParameterizedTest
     @MethodSource("turnRightRoversDirection")
     public void turnRight(Direction currentDirection, Direction expectedDirection) {
-        MarsRoverUseCase marsRover = new MarsRover();
+        MarsRoverUseCase marsRover = new MarsRover(new InMemoryPositionDirectionRepository());
         marsRover.setPosition(new PositionDirection(new Position(0, 0), currentDirection));
         marsRover.move(List.of(Right));
         assertEquals(expectedDirection, marsRover.getDirection());
@@ -109,7 +110,7 @@ public class MarsRoverUseCaseTest {
 
     @Test
     public void multipleCommands() {
-        MarsRoverUseCase marsRover = new MarsRover();
+        MarsRoverUseCase marsRover = new MarsRover(new InMemoryPositionDirectionRepository());
         marsRover.setPosition(new PositionDirection(new Position(0, 0), North));
         marsRover.move(List.of(Forward, Forward, Right, Right, Left, Backward));
         assertEquals(East, marsRover.getDirection());

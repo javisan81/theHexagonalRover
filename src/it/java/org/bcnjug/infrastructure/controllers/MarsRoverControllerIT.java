@@ -1,6 +1,8 @@
 package org.bcnjug.infrastructure.controllers;
 
-import org.bcnjug.domain.*;
+import org.bcnjug.domain.MarsRoverUseCase;
+import org.bcnjug.domain.Position;
+import org.bcnjug.domain.PositionDirection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -12,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
