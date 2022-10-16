@@ -1,9 +1,6 @@
 package org.bcnjug.infrastructure.repositories;
 
-import org.bcnjug.domain.Direction;
-import org.bcnjug.domain.Position;
-import org.bcnjug.domain.PositionDirection;
-import org.bcnjug.domain.PositionDirectionRepository;
+import org.bcnjug.domain.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -26,6 +23,6 @@ public class JPAPositionDirectionRepository implements PositionDirectionReposito
     public PositionDirection get() {
         return jpaPositionDirectionRepository.findById("rover1")
                 .map(e -> new PositionDirection(new Position(e.getX(), e.getY()), Direction.valueOf(e.getCoordinate())))
-                .orElse(null);
+                .orElseThrow(RoverNotInitializedException::new);
     }
 }

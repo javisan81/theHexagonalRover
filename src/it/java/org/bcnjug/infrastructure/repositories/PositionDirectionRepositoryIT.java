@@ -3,6 +3,7 @@ package org.bcnjug.infrastructure.repositories;
 import org.bcnjug.domain.Position;
 import org.bcnjug.domain.PositionDirection;
 import org.bcnjug.domain.PositionDirectionRepository;
+import org.bcnjug.domain.RoverNotInitializedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -28,7 +29,7 @@ abstract class PositionDirectionRepositoryIT {
     @MethodSource("initialPositionDirections")
     public void saveAndRetrievePositionDirection(PositionDirection positionDirection) {
         PositionDirectionRepository positionDirectionRepository = getPositionDirectionRepositoryUnderTest();
-        assertNull(positionDirectionRepository.get());
+        assertThrows(RoverNotInitializedException.class, positionDirectionRepository::get);
         positionDirectionRepository.save(positionDirection);
         assertEquals(positionDirection, positionDirectionRepository.get());
     }

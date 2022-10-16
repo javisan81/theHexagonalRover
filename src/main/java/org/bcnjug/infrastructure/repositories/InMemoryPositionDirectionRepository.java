@@ -2,6 +2,7 @@ package org.bcnjug.infrastructure.repositories;
 
 import org.bcnjug.domain.PositionDirection;
 import org.bcnjug.domain.PositionDirectionRepository;
+import org.bcnjug.domain.RoverNotInitializedException;
 
 public class InMemoryPositionDirectionRepository implements PositionDirectionRepository {
     private PositionDirection positionDirection;
@@ -13,6 +14,9 @@ public class InMemoryPositionDirectionRepository implements PositionDirectionRep
 
     @Override
     public PositionDirection get() {
+        if(positionDirection == null){
+            throw new RoverNotInitializedException();
+        }
         return positionDirection;
     }
 }
