@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import static org.bcnjug.domain.Direction.*;
 import static org.bcnjug.domain.MoveCommand.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MarsRoverUseCaseTest {
 
@@ -115,5 +116,11 @@ public class MarsRoverUseCaseTest {
         marsRover.move(List.of(Forward, Forward, Right, Right, Left, Backward));
         assertEquals(East, marsRover.getDirection());
         assertEquals(new Position(-1, 2), marsRover.getPosition());
+    }
+
+    @Test
+    public void moveRoverNotInitialize() {
+        MarsRoverUseCase marsRover = new MarsRover(new InMemoryPositionDirectionRepository());
+        assertThrows(RoverNotInitializedException.class, () -> marsRover.move(List.of(Forward, Forward, Right, Right, Left, Backward)));
     }
 }

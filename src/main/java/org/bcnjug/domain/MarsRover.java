@@ -26,7 +26,10 @@ public class MarsRover implements MarsRoverUseCase {
 
     @Override
     public void move(List<MoveCommand> commands) {
-        PositionDirection positionDirection1 = this.positionDirectionRepository.get();
-        this.positionDirectionRepository.save(positionDirection1.move(commands));
+        PositionDirection positionDirection = this.positionDirectionRepository.get();
+        if(positionDirection == null){
+            throw new RoverNotInitializedException();
+        }
+        this.positionDirectionRepository.save(positionDirection.move(commands));
     }
 }
