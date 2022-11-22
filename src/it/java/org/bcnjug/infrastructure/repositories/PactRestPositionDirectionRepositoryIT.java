@@ -9,6 +9,7 @@ import au.com.dius.pact.core.model.annotations.Pact;
 import org.bcnjug.domain.Position;
 import org.bcnjug.domain.PositionDirection;
 import org.bcnjug.domain.RoverNotInitializedException;
+import org.bcnjug.infrastructure.repositories.rest.RestPositionDirectoryRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.web.client.RestTemplateBuilder;

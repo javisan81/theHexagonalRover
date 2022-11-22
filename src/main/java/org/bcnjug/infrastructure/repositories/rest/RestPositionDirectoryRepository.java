@@ -1,4 +1,4 @@
-package org.bcnjug.infrastructure.repositories;
+package org.bcnjug.infrastructure.repositories.rest;
 
 import org.bcnjug.domain.*;
 import org.springframework.http.HttpEntity;
