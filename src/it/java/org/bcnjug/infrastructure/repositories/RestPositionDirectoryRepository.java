@@ -1,12 +1,15 @@
 package org.bcnjug.infrastructure.repositories;
 
-import org.bcnjug.domain.PositionDirection;
-import org.bcnjug.domain.PositionDirectionRepository;
-import org.bcnjug.domain.RoverNotInitializedException;
+import org.bcnjug.domain.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class RestPositionDirectoryRepository implements PositionDirectionRepository {
+    public static class RestPositionDirection {
+        public int x;
+        public int y;
+        public String direction;
+    }
     private final RestTemplate restTemplate;
 
     public RestPositionDirectoryRepository(RestTemplate restTemplate) {
@@ -21,8 +24,8 @@ public class RestPositionDirectoryRepository implements PositionDirectionReposit
     @Override
     public PositionDirection get() {
         try{
-            restTemplate.getForObject("/position", String.class);
-            return null;
+            RestPositionDirection restPositionDirection = restTemplate.getForObject("/position", RestPositionDirection.class);
+            return new PositionDirection(new Position(restPositionDirection.x, restPositionDirection.y), Direction.valueOf(restPositionDirection.direction));
         }catch (HttpClientErrorException.NotFound error) {
             throw new RoverNotInitializedException();
         }
