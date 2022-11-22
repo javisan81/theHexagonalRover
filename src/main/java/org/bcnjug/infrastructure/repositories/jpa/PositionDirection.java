@@ -8,17 +8,24 @@ import java.util.List;
 
 @Entity
 @Table(name = "positionDirection")
-@AllArgsConstructor
-@Getter
-@Setter
-@NoArgsConstructor
 public class PositionDirection {
     @Id
     @Column(name = "name")
     private String name;
 
-    private int x;
-    private int y;
-    private String coordinate;
+    public int x;
+    public int y;
+    public String coordinate;
+
+    public PositionDirection(String roverName, int x, int y, String coordinate) {
+        this.name=roverName;
+        this.x=x;
+        this.y=y;
+        this.coordinate=coordinate;
+    }
+
+    public PositionDirection() {
+
+    }
 }
 

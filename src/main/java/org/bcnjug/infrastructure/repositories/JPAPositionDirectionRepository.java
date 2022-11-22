@@ -29,7 +29,7 @@ public class JPAPositionDirectionRepository implements PositionDirectionReposito
     @Transactional
     public PositionDirection get() {
         return jpaPositionDirectionRepository.findById(ROVER_NAME)
-                .map(e -> new PositionDirection(new Position(e.getX(), e.getY()), Direction.valueOf(e.getCoordinate())))
+                .map(e -> new PositionDirection(new Position(e.x, e.y), Direction.valueOf(e.coordinate)))
                 .orElseThrow(RoverNotInitializedException::new);
     }
 }
