@@ -56,6 +56,27 @@ class PactRestPositionDirectionRepositoryIT {
                 .toPact();
     }
 
+
+    @Pact(provider = "hexagonalRoverPosition", consumer = "restPositionDirectionRepository")
+    RequestResponsePact savePosition(PactDslWithProvider builder) {
+        return builder
+                .given("Rover in any position")
+                .uponReceiving("A post")
+                .path("/position")
+                .method("POST")
+                .body("""
+                        {
+                            "x": 1,
+                            "y": 1,
+                            "direction": "North"
+                        }
+                        """)
+                .willRespondWith()
+                .status(200)
+                .headers(Map.of("Content-Type", "application/json"))
+                .toPact();
+    }
+
     @Test
     @PactTestFor(pactMethod = "roverNotInitialized")
     void roverWithNoPositionDirection(MockServer mockServer) {
@@ -78,6 +99,19 @@ class PactRestPositionDirectionRepositoryIT {
         RestPositionDirectoryRepository restPositionDirectoryRepository = new RestPositionDirectoryRepository(restTemplate);
 
         assertEquals(new PositionDirection(new Position(1, 1), North), restPositionDirectoryRepository.get());
+    }
+
+
+    @Test
+    @PactTestFor(pactMethod = "savePosition")
+    void savePositionInRover(MockServer mockServer) {
+        RestTemplate restTemplate = new RestTemplateBuilder()
+                .rootUri(mockServer.getUrl())
+                .build();
+
+        RestPositionDirectoryRepository restPositionDirectoryRepository = new RestPositionDirectoryRepository(restTemplate);
+
+        restPositionDirectoryRepository.save(new PositionDirection(new Position(1, 1), North));
     }
 
 }

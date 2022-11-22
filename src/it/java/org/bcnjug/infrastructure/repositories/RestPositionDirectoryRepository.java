@@ -1,6 +1,7 @@
 package org.bcnjug.infrastructure.repositories;
 
 import org.bcnjug.domain.*;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -9,6 +10,15 @@ public class RestPositionDirectoryRepository implements PositionDirectionReposit
         public int x;
         public int y;
         public String direction;
+
+        public RestPositionDirection() {
+        }
+
+        public RestPositionDirection(int x, int y, String direction) {
+            this.x = x;
+            this.y = y;
+            this.direction = direction;
+        }
     }
     private final RestTemplate restTemplate;
 
@@ -18,7 +28,8 @@ public class RestPositionDirectoryRepository implements PositionDirectionReposit
 
     @Override
     public void save(PositionDirection positionDirection) {
-
+        HttpEntity<RestPositionDirection> httpEntity =  new HttpEntity<>(new RestPositionDirection(positionDirection.position().x(), positionDirection.position().y(), positionDirection.direction().toString()));
+        restTemplate.postForObject("/position", httpEntity, String.class);
     }
 
     @Override
