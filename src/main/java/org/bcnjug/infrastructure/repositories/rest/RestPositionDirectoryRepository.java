@@ -29,13 +29,13 @@ public class RestPositionDirectoryRepository implements PositionDirectionReposit
     @Override
     public void save(PositionDirection positionDirection) {
         HttpEntity<RestPositionDirection> httpEntity =  new HttpEntity<>(new RestPositionDirection(positionDirection.position().x(), positionDirection.position().y(), positionDirection.direction().toString()));
-        restTemplate.postForObject("/position", httpEntity, String.class);
+        restTemplate.postForObject("/repository/position", httpEntity, String.class);
     }
 
     @Override
     public PositionDirection get() {
         try{
-            RestPositionDirection restPositionDirection = restTemplate.getForObject("/position", RestPositionDirection.class);
+            RestPositionDirection restPositionDirection = restTemplate.getForObject("/repository/position", RestPositionDirection.class);
             return new PositionDirection(new Position(restPositionDirection.x, restPositionDirection.y), Direction.valueOf(restPositionDirection.direction));
         }catch (HttpClientErrorException.NotFound error) {
             throw new RoverNotInitializedException();

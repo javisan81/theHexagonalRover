@@ -30,7 +30,7 @@ class PactRestPositionDirectionRepositoryIT {
         return builder
                 .given("Initial State")
                 .uponReceiving("A get without state")
-                .path("/position")
+                .path("/repository/position")
                 .method("GET")
                 .willRespondWith()
                 .status(404)
@@ -42,7 +42,7 @@ class PactRestPositionDirectionRepositoryIT {
         return builder
                 .given("Rover initialized in 1,1 North")
                 .uponReceiving("A get")
-                .path("/position")
+                .path("/repository/position")
                 .method("GET")
                 .willRespondWith()
                 .body("""
@@ -63,7 +63,7 @@ class PactRestPositionDirectionRepositoryIT {
         return builder
                 .given("Rover in any position")
                 .uponReceiving("A post")
-                .path("/position")
+                .path("/repository/position")
                 .method("POST")
                 .body("""
                         {

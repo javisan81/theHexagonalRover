@@ -12,7 +12,7 @@
       ],
       "request": {
         "method": "GET",
-        "path": "/position"
+        "path": "/repository/position"
       },
       "response": {
         "status": 404
@@ -32,7 +32,7 @@
           "y": 1
         },
         "method": "POST",
-        "path": "/position"
+        "path": "/repository/position"
       },
       "response": {
         "headers": {
@@ -50,7 +50,7 @@
       ],
       "request": {
         "method": "GET",
-        "path": "/position"
+        "path": "/repository/position"
       },
       "response": {
         "body": {
